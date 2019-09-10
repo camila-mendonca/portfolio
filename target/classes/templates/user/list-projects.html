@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}">
+	<title>My Projects</title>
+</head>
+<body class="bg-dark">
+	<div class="container shadow-sm bg-white rounded-lg p-3 mt-3">
+		<h3>My Projects</h3>
+		<table class="table table-bordered">
+			<thead class="thead-light">
+				<th scope="col">Name</th>
+				<th scope="col">Skills</th>
+				<th scope="col">Main</th>
+			</thead>
+			<tbody>
+				<tr th:each="p : ${projects}">
+					<td><a th:href="@{/user/project/{id}(id=${p.id})}"><span th:text="${p.name}"></span></a></td>
+					<td><span th:each="s : ${p.skills}" th:text="${s.name}" class="mr-2"></span></td>
+					<td><span th:text="${p.main}? 'Yes' : 'No'"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		<a th:href="@{/user/newproject}" class="btn btn-primary">New Project</a>
+	</div>
+</body>
+</html>
