@@ -20,12 +20,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(uds).passwordEncoder(passwordEncoder());
-	}
+	}	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -38,6 +33,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.formLogin().defaultSuccessUrl("/user/list-projects").permitAll();
 	}
 	
-	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(uds).passwordEncoder(passwordEncoder());
+	}
 	
 }

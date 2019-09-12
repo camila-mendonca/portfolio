@@ -59,7 +59,7 @@
           </p>
           <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://www.linkedin.com/in/camila-louise-mendonca/?locale=en_US" target="_blank"><i class="fab fa-linkedin"></i>Linkedin</a>
           <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://github.com/camila-mendonca/" target="_blank"><i class="fab fa-github"></i>GitHub</a>
-          <a class="btn btn-primary btn-xl js-scroll-trigger" href="https://camila-portfolio.herokuapp.com/" target="_blank"><i class="fas fa-file-alt"></i>Resume</a>
+          <a class="btn btn-primary btn-xl js-scroll-trigger" href="/other/CamilaMendonca.pdf" target="_blank"><i class="fas fa-file-alt"></i>Resume</a>
         </div>
       </div>
     </div>
@@ -76,7 +76,9 @@
           th:onclick="'$(\'#project'+${p.id}+'\').on(\'show.bs.modal\', function(){$(\'#modal' +${p.id}+ '\').flexslider({animation: \'slide\',slideshow: false,controlNav: false,directionNav: true, start: function(slider){$(\'.flexslider\').resize();}});});'">
             <span class="caption">
               <span class="caption-content">
-                <h2><span th:text="${p.name}"></span> </h2>
+                <h2>
+                <span th:text="${p.name}"></span>                
+                </h2>
                 <p class="mb-0"><span th:text="${p.description}"></span> </p>
               </span>
             </span>
