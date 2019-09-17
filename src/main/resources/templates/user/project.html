@@ -1,12 +1,104 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{base}">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	
-	<link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}">
 	<link rel="stylesheet" th:href="@{/css/flexslider.css}">
 	
+	
+	<title>Project</title>
+</head>
+<body>
+	<div layout:fragment="page_content" >
+		<h3><span th:text="${project.name}"></span></h3>
+		<div class="flexslider uslider">
+			<ul class="slides">					
+				<li th:each="p : ${project.pictures}">
+					<img th:src="${p.path}" alt="${p.name}">
+					<p class="flex-caption"><span th:text="${p.name}"></span></p>
+				</li>					
+			</ul>				
+		</div>
+		<div class="text-center">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addImage">Add Picture</button>
+		</div>
+		
+		<div class="modal fade" id="addImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Add Picture</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<form th:action="@{/user/addpicture}" th:object="${picture}" method="post" enctype="multipart/form-data">
+						<div class="modal-body">						
+							<input type="hidden" th:field="*{project}" th:value="${picture.project}">
+							<div class="form-group">								
+								<input type="file" class="form-control-file" id="file" name="file">								
+							</div>
+							<div class="form-group">
+								<label for="name">Name</label>
+								<input type="text" th:field="*{name}" class="form-control" id="name">
+							</div>
+							<div class="form-group">
+								<label for="description">Description</label>
+								<textarea class="form-control" th:field="*{description}" id="description" rows="3"></textarea>
+							</div>
+							<div class="form-check mt-3">					
+								<input type="checkbox" th:field="*{thumbnail}" class="form-check-input" id="thumbnail">
+								<label for="thumbnail" class="form-check-label">Select as thumbnail</label>
+							</div>						
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<input type="submit" class="btn btn-primary" value="Save">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<form action="#" th:action="@{/user/editproject}" th:object=${project} method="post">
+			<!-- <label for="description">Description</label>
+			<textarea class="form-control" th:field="*{description}" id="description" rows="3"></textarea>
+			<label for="githubLink">Github Link:</label>
+			<input type="text" th:field="*{githubLink}" id="githubLink" class="form-control">
+			<label for="appLink">Application Link:</label>
+			<input type="text" th:field="*{appLink}" id="appLink" class="form-control"> -->
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input type="text" th:field="*{name}" class="form-control" id="name">
+			</div>
+			<div class="form-group">
+				<label for="description">Description</label>
+				<textarea class="form-control" th:field="*{description}" id="description" rows="3"></textarea>
+			</div>
+			<div>
+				<label for="skills">Skills</label>
+				<select multiple th:field="*{skills}" class="form-control" id="skills">
+					<option th:each="s : ${selectskills}" th:value="${s.name}" th:text="${s.name}">
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="githublink">GitHub Link</label>
+				<input type="text" th:field="*{githubLink}" class="form-control" id="githublink">
+			</div>
+			<div>
+				<label for="applink">Application Link</label>
+				<input type="text" th:field="*{appLink}" class="form-control" id="applink">
+			</div>
+			<div class="form-group">
+				<div class="form-check mt-3">					
+					<input type="checkbox" th:field="*{main}" class="form-check-input" id="main">
+					<label for="main" class="form-check-label">Main project</label>
+				</div>				
+			</div>
+			<input type="submit" class="btn btn-primary" value="Done">
+			
+		</form>
+
 	<script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"></script>
 	<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 	<script th:src="@{/js/jquery.flexslider.js}"></script>
@@ -19,63 +111,8 @@
 		  });
 		});
 	</script>
-	<title>Project</title>
-</head>
-<body class="bg-dark">
-	<div class="container shadow-sm bg-white rounded-lg p-3 mt-3" >
-		<h3><span th:text="${project.name}"></span></h3>
-		<!-- id="flexslider-carousel"  -->
-		<div class="flexslider uslider">
-			<ul class="slides">					
-				<li th:each="p : ${project.pictures}">
-					<img th:src="${p.path}" alt="${p.name}">
-					<p class="flex-caption"><span th:text="${p.name}"></span></p>
-				</li>					
-			</ul>				
-		</div>
-		
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add Picture</button>
-
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Add Picture</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<form th:action="@{/user/addpicture}" th:object="${picture}" method="post" enctype="multipart/form-data">
-					<div class="modal-body">
-						
-							<input type="hidden" th:field="*{project}" th:value="${picture.project}">
-							<div class="form-group">
-								<input type="file" class="form-control-file" id="file" name="file">
-							</div>
-							<div class="form-group">
-								<label for="name">Name</label>
-								<input type="text" th:field="*{name}" class="form-control" id="name">
-							</div>
-							<div class="form-group">
-								<label for="description">Description</label>
-								<textarea class="form-control" th:field="*{description}" id="description" rows="3"></textarea>
-							</div>
-						
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<input type="submit" class="btn btn-primary" value="Save">
-					</div>
-					</form>
-				</div>
-			</div>
-		</div>
-		
-		<p><span th:text="${project.description}"></span></p>
-		<a th:if="${project.githubLink != null}" th:href="${project.githubLink}" class="btn btn-dark">GitHub</a>
-		<a th:if="${project.appLink != null}" th:href="${project.appLink}" class="btn btn-dark">Application</a>
-	</div>
 	
+	</div>
 	
 </body>
 </html>

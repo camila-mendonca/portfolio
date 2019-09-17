@@ -17,8 +17,8 @@ public class ProjectServiceImpl implements ProjectService{
 	ProjectRepository projectRepository;
 
 	@Override
-	public void saveProject(Project project) {		
-		projectRepository.save(project);
+	public void saveProject(Project project) {
+		projectRepository.save(project);		
 	}
 
 	@Override
@@ -32,9 +32,9 @@ public class ProjectServiceImpl implements ProjectService{
 		Iterable<Project> projects = Collections.emptyList();				
 		if (type == ListType.MAIN) {
 			projects = projectRepository.findAllByMainTrue();
-			Iterable<ProjectPicture> pictures = Collections.emptyList();			
+			//Iterable<ProjectPicture> pictures = Collections.emptyList();			
 			for (Project p : projects) {
-				pictures = p.getPictures();
+				Iterable<ProjectPicture> pictures = p.getPictures();
 				//We set the first picture of the list as thumbnail, just in case none of them was marked as thumbnail
 				p.setThumbnail(pictures.iterator().next().getPath());
 				//Let's iterate through the project pictures to see if one of them was selected as thumbnail

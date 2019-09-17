@@ -1,5 +1,8 @@
 package com.camilamendonca.portfolio.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.camilamendonca.portfolio.entity.ListType;
 import com.camilamendonca.portfolio.entity.Project;
 import com.camilamendonca.portfolio.entity.ProjectPicture;
+import com.camilamendonca.portfolio.entity.SelectedSkills;
+import com.camilamendonca.portfolio.entity.Skill;
 import com.camilamendonca.portfolio.service.ProjectPictureService;
 import com.camilamendonca.portfolio.service.ProjectService;
 import com.camilamendonca.portfolio.service.SkillService;
@@ -52,26 +57,60 @@ public class UserController {
 		return "redirect:/user";
 	}
 	
+	private static Iterable<SelectedSkills> loadSelectedSkills(Iterable<Skill> skills, Iterable<Skill> projectSkills){
+		List<SelectedSkills> selSkills = new ArrayList<SelectedSkills>();
+		for(Skill s : skills) {
+			if(isSelected(s.getName(), projectSkills)) {				
+				selSkills.add(new SelectedSkills(s.getName(),true));				
+			} else {
+				selSkills.add(new SelectedSkills(s.getName(), false));
+			}
+		}
+		return selSkills;
+	}
+	
+	private static boolean isSelected(String skill, Iterable<Skill> projectSkills) {
+		boolean r = false;
+		for(Skill ps : projectSkills) {
+			if(skill==ps.getName());
+			r = true;
+		}
+		return r;
+	}
+	
 	@GetMapping("/user/project/{id}")
 	public String loadProject(@PathVariable("id") Long projectId, Model model, ProjectPicture picture) {
 		Project project = projectService.loadProject(projectId);
 		model.addAttribute("project", project);
 		picture.setProject(project);
 		model.addAttribute("picture", picture);
+		model.addAttribute("selectskills", loadSelectedSkills(skillService.listSkills(), project.getSkills()));
+		return "/user/project";
+	}
+	
+	@PostMapping("/user/editproject")
+	public String editProject(Model model, Project project, ProjectPicture picture) {
+		//Figure out why it's duplicating the project when I deselect a skill and fix
+		//Update: That's because I'm not sending the id...
+		projectService.saveProject(project);
+		model.addAttribute("project", project);
+		picture.setProject(project);
+		model.addAttribute("picture", picture);
+		model.addAttribute("selectskills", loadSelectedSkills(skillService.listSkills(), project.getSkills()));
 		return "/user/project";
 	}
 	
 	@PostMapping("/user/addpicture")
 	public String addPicture(@Valid ProjectPicture picture, MultipartFile file, BindingResult bindingResult) {
 		String projectId = Long.toString(picture.getProject().getId());
-		String r = "redirect:/user/project/" + projectId;
+		String redirect = "redirect:/user/project/" + projectId;
 		if(bindingResult.hasErrors()) {
-			return r;
+			return redirect;
 		}
 		String path = fileSaver.write("projectpictures", file);
 		picture.setPath(path);
 		pictureService.save(picture);
-		return r;
+		return redirect;
 	}
 
 }

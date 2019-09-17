@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{base}">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}">
-	<title>New Project</title>
+	<title>My Projects</title>
 </head>
-<body class="bg-dark">
-	<div class="container shadow-sm bg-white rounded-lg p-3 mt-3" >
+<body>
+	<div layout:fragment="page_content">
 		<form th:action="@{/user/addproject}" th:object="${project}" method="post">
 			<div class="form-group">
 				<label for="name">Name</label>
