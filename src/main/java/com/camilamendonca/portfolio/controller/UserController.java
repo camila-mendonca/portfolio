@@ -85,7 +85,7 @@ public class UserController {
 		picture.setProject(project);
 		model.addAttribute("picture", picture);
 		model.addAttribute("selectskills", loadSelectedSkills(skillService.listSkills(), project.getSkills()));
-		return "/user/project";
+		return "user/project";
 	}
 	
 	@PostMapping("/user/editproject")
@@ -97,7 +97,7 @@ public class UserController {
 		picture.setProject(project);
 		model.addAttribute("picture", picture);
 		model.addAttribute("selectskills", loadSelectedSkills(skillService.listSkills(), project.getSkills()));
-		return "/user/project";
+		return "user/project";
 	}
 	
 	@PostMapping("/user/addpicture")

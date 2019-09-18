@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 		.antMatchers("/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
-		.formLogin().defaultSuccessUrl("/user/list-projects").permitAll();
+		.formLogin().defaultSuccessUrl("/user").permitAll();
 	}
 	
 	@Override
