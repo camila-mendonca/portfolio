@@ -15,6 +15,7 @@ public class FileSaver {
 		String filePath = "/img/" + baseFolder + "/" + file.getOriginalFilename();
 		try {
 			file.transferTo(new File(transferPath));
+			System.out.println("File saved to: " + transferPath);
 			return filePath;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
